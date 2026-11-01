@@ -101,8 +101,9 @@ void NN::train() {
   c.s_i[0] = 1;
   c.s_j[0] = 1;
   reset();
-  for (int epoch = 0; epoch < 100; ++epoch) {
+  for (int epoch = 0; epoch < 10; ++epoch) {
     std::shuffle(training_order.begin(), training_order.end(), re);
+    double best_mse = 1.0;
     int train_count = 0;
     double mse_training = 0.0;
     while (train_count < 5000) {
@@ -133,6 +134,10 @@ void NN::train() {
 
     mse_training /= 50000;
     mse_validation /= 10000;
+    if (mse_validation < best_mse) {
+      best_mse = mse_validation;
+      write();
+    }
     std::cout << "Epoch: " + std::to_string(epoch) << std::endl;
     std::cout << "MSE Training: " + std::to_string(mse_training) << std::endl;
     std::cout << "MSE Validation: " + std::to_string(mse_validation)
@@ -143,6 +148,19 @@ void NN::train() {
 };
 
 void NN::load_weights() {
+  std::ifstream file(std::string(WEIGHTS_DIR) + "/weights", std::ios::binary);
+  if (file) {
+
+    file.seekg(0, std::ios::end);
+    std::streamsize file_size = file.tellg();
+    file.seekg(0, std::ios::beg);
+
+    if (file_size == weights_storage.size) {
+      file.read(reinterpret_cast<char *>(&weights), sizeof(weights));
+      return;
+    }
+    std::cerr << "Weights not loaded" << std::endl;
+  }
   std::uniform_real_distribution<double> unif(-0.1, 0.1);
   std::random_device rd;
   std::default_random_engine re(rd());
@@ -285,4 +303,13 @@ int NN::get_digit(const std::array<double, 784> &input) {
     }
   }
   return number;
+};
+
+void NN::write() {
+  std::ofstream file(std::string(WEIGHTS_DIR) + "/weights", std::ios::binary);
+  if (!file) {
+    std::cerr << "Weights File not found" << std::endl;
+    std::exit(4);
+  }
+  file.write(reinterpret_cast<const char *>(&weights), sizeof(weights));
 };

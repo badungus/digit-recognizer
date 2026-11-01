@@ -33,6 +33,14 @@ private:
   double learning_rate = 1.0;
   int batch_size = 10;
   std::vector<int> training_order;
+
+  struct WeightsStorage {
+    int size = 345168;
+    int v = 40035;
+    int w = 2601;
+    int u = 510;
+  } weights_storage;
+
   struct Data {
     std::vector<std::array<double, 784>> train_input;
     std::vector<std::array<double, 784>> validation_input;

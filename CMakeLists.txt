@@ -17,3 +17,6 @@ endif()
 
 target_compile_definitions(digit-recognizer PRIVATE
   DATA_DIR="${CMAKE_SOURCE_DIR}/archive")
+
+target_compile_definitions(digit-recognizer PRIVATE
+  WEIGHTS_DIR="${CMAKE_SOURCE_DIR}/weights")
