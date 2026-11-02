@@ -16,6 +16,7 @@ public:
   GUI(std::unique_ptr<NN> &nn);
 
 private:
+  bool board_empty();
   std::unique_ptr<NN> &nn_;
   void handle_input();
   void input_board(Input &input);
@@ -24,8 +25,9 @@ private:
   void draw_output();
   void board_reset();
   Vector2 board_position;
-  std::array<double, 784> board;
-  const float pixel_size = 10.0;
+  std::array<std::array<uint8_t, 280>, 280> board;
+  const float board_size = 280.0;
+  const int brush_radius = 5;
   const int screenWidth = 800;
   const int screenHeight = 450;
 };
