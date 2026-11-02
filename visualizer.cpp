@@ -45,7 +45,6 @@ void GUI::draw_board() {
 };
 
 void GUI::draw_output() {
-  std::cerr << "1" << std::endl;
   struct Bounds {
     int south = 0;
     int north = INT32_MAX;
@@ -69,7 +68,6 @@ void GUI::draw_output() {
     }
   }
 
-  std::cerr << "2" << std::endl;
   bounds.width = bounds.east - bounds.west;
   bounds.height = bounds.south - bounds.north;
   bounds.center_x = bounds.west + bounds.width / 2;
@@ -81,7 +79,6 @@ void GUI::draw_output() {
     int start_y;
   } loop;
 
-  std::cerr << "3" << std::endl;
   if (bounds.width > bounds.height) {
     scale = bounds.width / 20.0;
     bounds.size = bounds.width;
@@ -89,7 +86,6 @@ void GUI::draw_output() {
     loop.start_y = bounds.center_y - bounds.size / 2;
   } else {
 
-    std::cerr << "4" << std::endl;
     scale = bounds.height / 20.0;
     bounds.size = bounds.height;
     loop.start_x = bounds.center_x - bounds.size / 2;
@@ -106,15 +102,12 @@ void GUI::draw_output() {
     }
   */
 
-  std::cerr << "5" << std::endl;
   std::array<double, 784> image;
   image.fill(0);
   for (int row = 0; row < 20; ++row) {
 
-    std::cerr << "7" << std::endl;
     for (int col = 0; col < 20; ++col) {
 
-      std::cerr << "8" << std::endl;
       double average_brightness = 0;
       for (int x = loop.start_x + col * scale;
 
@@ -131,19 +124,19 @@ void GUI::draw_output() {
           average_brightness / (255.0 * scale * scale);
     }
   }
-
-  for (int row = 0; row < 28; ++row) {
-    for (int col = 0; col < 28; ++col) {
-      if (!image[28 * row + col])
-        continue;
-      DrawPixel(board_position.x + 280 + col, board_position.y + 280 + row,
-                BLACK);
+  /*
+    for (int row = 0; row < 28; ++row) {
+      for (int col = 0; col < 28; ++col) {
+        if (!image[28 * row + col])
+          continue;
+        DrawPixel(board_position.x + 280 + col, board_position.y + 280 + row,
+                  BLACK);
+      }
     }
-  }
+    */
 
-  std::cerr << "11" << std::endl;
   DrawText(std::to_string(nn_->get_digit(image)).c_str(), screenWidth / 2, 20,
-           20, BLACK);
+           50, BLACK);
 };
 
 void GUI::input_board(Input &input) {
