@@ -294,14 +294,7 @@ int NN::get_digit(const std::array<double, 784> &input) {
   c.s_i[0] = 1;
   c.s_j[0] = 1;
   forward_pass(input, c);
-  double best = 0;
-  int number = 0;
-  for (int i = 0; i < 10; i++) {
-    if (c.s_k[i] > best) {
-      best = c.s_k[i];
-      number = i;
-    }
-  }
+  int number = (std::max_element(c.s_k.begin(), c.s_k.end()) - c.s_k.begin());
   return number;
 };
 
